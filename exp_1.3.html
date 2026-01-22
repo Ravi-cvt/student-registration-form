@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* CSS Variables for Easy Theme Management */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #222222;
+            --primary-color: #5C6AC4;
+            --header-bg: #e0e0e0;
+            --sidebar-bg: #f5f5f5;
+        }
+
+        /* Dark Mode Overrides */
+        body.dark {
+            --bg-color: #121212;
+            --text-color: #eeeeee;
+            --primary-color: #8AB4F8;
+            --header-bg: #1f1f1f;
+            --sidebar-bg: #2a2a2a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .header {
+            background-color: var(--header-bg);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .title {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        #themeToggle {
+            cursor: pointer;
+            padding: 8px 15px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 4px;
+            color: #ffffff;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        #themeToggle:hover {
+            opacity: 0.9;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-gap: 20px;
+            padding: 25px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            transition: all 0.2s;
+        }
+
+        .sidebar li:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .content {
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        #currentTime {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none; /* Hide sidebar on mobile for simplicity */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1 class="title">Admin Dashboard</h1>
+        <button id="themeToggle">Toggle Dark/Light Mode</button>
+    </header>
+
+    <main class="dashboard">
+        <section class="sidebar">
+            <nav>
+                <ul>
+                    <li>Overview</li>
+                    <li>Users</li>
+                    <li>Settings</li>
+                    <li>Reports</li>
+                </ul>
+            </nav>
+        </section>
+
+        <section class="content">
+            <h2>Welcome, Admin!</h2>
+            <p>Current Server Time:</p>
+            <p id="currentTime"></p>
+            <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
+            <p>Your dashboard summary will appear here.</p>
+        </section>
+    </main>
+
+    
+
+    <script>
+        // --- Clock Functionality ---
+        function showTime() {
+            const timeDisplay = document.getElementById('currentTime');
+            if(timeDisplay) {
+                timeDisplay.innerHTML = new Date().toLocaleString();
+            }
+        }
+        setInterval(showTime, 1000);
+        showTime(); // Initial call
+
+        // --- Theme Toggle Functionality ---
+        const themeToggleBtn = document.getElementById('themeToggle');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        // On page load: check localStorage for preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.body.classList.contains('dark');
+            setTheme(isDark ? 'light' : 'dark');
+        });
+    </script>
+</body>
+</html>
